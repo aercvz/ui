@@ -1578,8 +1578,8 @@ function library.new(library_title, cfg_location, color)
 						local LabelFrame = library:create("Frame", {
 							Name = "LabelFrame",
 							BackgroundTransparency = 1,
-							Position = UDim2.new(0, 0, 0, 0),
-							Size = UDim2.new(1, 0, 0, 30),
+							Position = UDim2.new(0, 9, 0.5, 0),
+							Size = UDim2.new(0, 9, 0, 9),
 						}, Container)
 
 						local Label = library:create("TextLabel", {
@@ -1589,7 +1589,7 @@ function library.new(library_title, cfg_location, color)
 							BorderColor3 = Color3.fromRGB(0, 0, 0),
 							Position = UDim2.new(0, 27, 0, 5),
 							TextXAlignment = Enum.TextXAlignment.Left,
-							Size = UDim2.new(0, 215, 0, 20),
+							Size = UDim2.new(0, 200, 0, 9),
 							Font = Enum.Font.Ubuntu,
 							Text = text,
 							TextColor3 = Color3.fromRGB(150, 150, 150),
