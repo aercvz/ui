@@ -734,7 +734,9 @@ function library.new(library_title, cfg_location, color)
 										elseif extra_value.Type == "Hold" then
 											extra_value.Active = true
 										end
-										key_callback(extra_value, false)
+										local returned_data = key_callback(extra_value, false) do
+											element:set_value(returned_data, true)
+										end
 										menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
 									end
 								end
@@ -745,7 +747,9 @@ function library.new(library_title, cfg_location, color)
 									if key == extra_value.Key then
 										if extra_value.Type == "Hold" then
 											extra_value.Active = false
-											key_callback(extra_value, false)
+											local returned_data = key_callback(extra_value, false) do
+												element:set_value(returned_data, true)
+											end
 											menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
 										end
 									end
