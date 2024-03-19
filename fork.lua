@@ -144,18 +144,6 @@ function library.new(library_title, cfg_location, color)
 		syn.protect_gui(ScreenGui)
 	end
 
-	local Cursor = library:create("ImageLabel", {
-		Name = "Cursor",
-		BackgroundTransparency = 1,
-		Size = UDim2.new(0, 17, 0, 17),
-		Image = "rbxassetid://7205257578",
-		ZIndex = 6969,
-	}, ScreenGui)
-
-	rs.RenderStepped:Connect(function()
-		Cursor.Position = UDim2.new(0, mouse.X, 0, mouse.Y + 36)
-	end)
-
 	ScreenGui.Parent = game:GetService("CoreGui")
 
 	function menu.IsOpen()
@@ -365,7 +353,7 @@ function library.new(library_title, cfg_location, color)
 			}, SectionButton)
 
 			local UIGradient = library:create("UIGradient", {
-				Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(81, 97, 243)), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))},
+				Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, color), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))},
 			}, SectionDecoration)
 
 			local SectionFrame = library:create("Frame", {
