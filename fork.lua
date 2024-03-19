@@ -1575,26 +1575,19 @@ function library.new(library_title, cfg_location, color)
 						local has_extra = false
 						local binding = false
 
-						local LabelFrame = library:create("Frame", {
-							Name = "LabelFrame",
-							BackgroundTransparency = 1,
-							Position = UDim2.new(0, 0, 0, 0),
-							Size = UDim2.new(1, 0, 0, 18),
-						}, Container)
-
 						local Label = library:create("TextLabel", {
 							Name = "Label",
 							AnchorPoint = Vector2.new(0.5, 0.5),
 							BackgroundTransparency = 1,
 							BorderColor3 = Color3.fromRGB(0, 0, 0),
-							Position = UDim2.new(0, 27, 0, 5),
+							Position = UDim2.new(0, 0, 0, 0),
 							TextXAlignment = Enum.TextXAlignment.Left,
-							Size = UDim2.new(0, 200, 0, 9),
+							Size = UDim2.new(1, -20, 0, 18),
 							Font = Enum.Font.Ubuntu,
 							Text = text,
 							TextColor3 = Color3.fromRGB(150, 150, 150),
 							TextSize = 14,
-						}, LabelFrame)
+						}, Container)
 						
 						function element:add_keybind(key_default, key_callback)
 							local keybind = {}
