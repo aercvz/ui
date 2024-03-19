@@ -1569,6 +1569,253 @@ function library.new(library_title, cfg_location, color)
 							library:tween(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
 							do_callback()
 						end)
+					elseif type == "TextLabel" then
+						Border.Size = Border.Size + UDim2.new(0, 0, 0, 30)
+						
+						local has_extra = false
+						local binding = false
+
+						local LabelFrame = library:create("Frame", {
+							Name = "LabelFrame",
+							BackgroundTransparency = 1,
+							Position = UDim2.new(0, 0, 0, 0),
+							Size = UDim2.new(1, 0, 0, 30),
+						}, Container)
+
+						local Label = library:create("TextLabel", {
+							Name = "Label",
+							AnchorPoint = Vector2.new(0.5, 0.5),
+							BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+							BorderColor3 = Color3.fromRGB(0, 0, 0),
+							Position = UDim2.new(0.5, 0, 0.5, 0),
+							Size = UDim2.new(0, 215, 0, 20),
+							Font = Enum.Font.Ubuntu,
+							Text = text,
+							TextColor3 = Color3.fromRGB(150, 150, 150),
+							TextSize = 14,
+						}, LabelFrame)
+						
+						function element:add_keybind(key_default, key_callback)
+							local keybind = {}
+
+							if has_extra then return end
+							has_extra = true
+							local extra_flag = "$"..flag
+
+							local extra_value = {Key = key_default, Type = "Always", Active = true}
+							key_callback = key_callback or function() end
+
+							local Keybind = library:create("TextButton", {
+								Name = "Keybind",
+								AnchorPoint = Vector2.new(1, 0),
+								BackgroundTransparency = 1,
+								Position = UDim2.new(0, 265, 0, 0),
+								Size = UDim2.new(0, 56, 0, 20),
+								Font = Enum.Font.Ubuntu,
+								Text = "[ NONE ]",
+								TextColor3 = Color3.fromRGB(150, 150, 150),
+								TextSize = 14,
+								TextXAlignment = Enum.TextXAlignment.Right,
+							}, Label)
+
+							local KeybindFrame = library:create("Frame", {
+								Name = "KeybindFrame",
+								BackgroundColor3 = Color3.fromRGB(10, 10, 10),
+								BorderColor3 = Color3.fromRGB(30, 30, 30),
+								Position = UDim2.new(1, 5, 0, 3),
+								Size = UDim2.new(0, 55, 0, 75),
+								Visible = false,
+								ZIndex = 2,
+							}, Keybind)
+
+							local UIListLayout = library:create("UIListLayout", {
+								HorizontalAlignment = Enum.HorizontalAlignment.Center,
+								SortOrder = Enum.SortOrder.LayoutOrder,
+							}, KeybindFrame)
+
+							local keybind_in = false
+							local keybind_in2 = false
+							Keybind.MouseEnter:Connect(function()
+								keybind_in = true
+								library:tween(Keybind, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
+							end)
+							Keybind.MouseLeave:Connect(function()
+								keybind_in = false
+								library:tween(Keybind, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+							end)
+							KeybindFrame.MouseEnter:Connect(function()
+								keybind_in2 = true
+								library:tween(KeybindFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = color})
+							end)
+							KeybindFrame.MouseLeave:Connect(function()
+								keybind_in2 = false
+								library:tween(KeybindFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(30, 30, 30)})
+							end)
+							uis.InputBegan:Connect(function(input)
+								if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 and not binding then
+									if KeybindFrame.Visible == true and not keybind_in and not keybind_in2 then
+										KeybindFrame.Visible = false
+									end
+								end
+							end)
+
+							local Always = library:create("TextButton", {
+								Name = "Always",
+								BackgroundTransparency = 1,
+								Size = UDim2.new(1, 0, 0, 25),
+								Font = Enum.Font.Ubuntu,
+								Text = "Always",
+								TextColor3 = color,
+								TextSize = 14,
+								ZIndex = 2,
+							}, KeybindFrame)
+
+							local Hold = library:create("TextButton", {
+								Name = "Hold",
+								BackgroundTransparency = 1,
+								Size = UDim2.new(1, 0, 0, 25),
+								Font = Enum.Font.Ubuntu,
+								Text = "Hold",
+								TextColor3 = Color3.fromRGB(150, 150, 150),
+								TextSize = 14,
+								ZIndex = 2,
+							}, KeybindFrame)
+
+							local Toggle = library:create("TextButton", {
+								Name = "Toggle",
+								BackgroundTransparency = 1,
+								Size = UDim2.new(1, 0, 0, 25),
+								Font = Enum.Font.Ubuntu,
+								Text = "Toggle",
+								TextColor3 = Color3.fromRGB(150, 150, 150),
+								TextSize = 14,
+								ZIndex = 2,
+							}, KeybindFrame)
+							for _,TypeButton in next, KeybindFrame:GetChildren() do
+								if TypeButton:IsA("UIListLayout") then continue end
+
+								TypeButton.MouseEnter:Connect(function()
+									if extra_value.Type ~= TypeButton.Text then
+										library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
+									end
+								end)
+								TypeButton.MouseLeave:Connect(function()
+									if extra_value.Type ~= TypeButton.Text then
+										library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+									end
+								end)
+								TypeButton.MouseButton1Down:Connect(function()
+									KeybindFrame.Visible = false
+
+									extra_value.Type = TypeButton.Text
+									if extra_value.Type == "Always" then
+										extra_value.Active = true
+									else
+										extra_value.Active = true
+									end
+									key_callback(extra_value)
+									menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+
+									for _,TypeButton2 in next, KeybindFrame:GetChildren() do
+										if TypeButton2:IsA("UIListLayout") then continue end
+										library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+									end
+									library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = color})
+								end)
+							end
+
+							local is_binding = false
+							uis.InputBegan:Connect(function(input)
+								if is_binding then
+									is_binding = false
+
+									local new_value = input.KeyCode.Name ~= "Unknown" and input.KeyCode.Name or input.UserInputType.Name
+									Keybind.Text = "[ "..new_value:upper().." ]"
+									Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3, 0, 20)
+									extra_value.Key = new_value
+
+									if new_value == "Backspace" then
+										Keybind.Text = "[ NONE ]"
+										Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3, 0, 20)
+										extra_value.Key = nil
+									end
+
+									key_callback(extra_value, true)
+									menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+								elseif extra_value.Key ~= nil then
+									local key = input.KeyCode.Name ~= "Unknown" and input.KeyCode.Name or input.UserInputType.Name
+									if key == extra_value.Key then
+										if extra_value.Type == "Toggle" then
+											extra_value.Active = not extra_value.Active
+										elseif extra_value.Type == "Hold" then
+											extra_value.Active = true
+										end
+										local returned_data = key_callback(extra_value, false) do
+											element:set_value(returned_data, true)
+										end
+										menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+									end
+								end
+							end)
+							uis.InputEnded:Connect(function(input)
+								if extra_value.Key ~= nil and not is_binding then
+									local key = input.KeyCode.Name ~= "Unknown" and input.KeyCode.Name or input.UserInputType.Name
+									if key == extra_value.Key then
+										if extra_value.Type == "Hold" then
+											extra_value.Active = false
+											local returned_data = key_callback(extra_value, false) do
+												element:set_value(returned_data, true)
+											end
+											menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+										end
+									end
+								end
+							end)
+
+							Keybind.MouseButton1Down:Connect(function()
+								if not is_binding then
+									wait()
+									is_binding = true
+									Keybind.Text = "[ ... ]"
+									Keybind.Size = UDim2.new(0, library:get_text_size("[ ... ]", 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3,0, 20)
+								end
+							end)
+
+							Keybind.MouseButton2Down:Connect(function()
+								if not is_binding then
+									KeybindFrame.Visible = not KeybindFrame.Visible
+								end
+							end)
+
+							function keybind:set_value(new_value, cb)
+								extra_value = new_value and new_value or extra_value
+								menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+
+								for _,TypeButton2 in next, KeybindFrame:GetChildren() do
+									if TypeButton2:IsA("UIListLayout") then continue end
+									if TypeButton2.Name ~= extra_value.Type then
+										library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+									else
+										library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = color})
+									end
+								end
+
+								local key = extra_value.Key ~= nil and extra_value.Key or "NONE"
+								Keybind.Text = "[ "..key:upper().." ]"
+								Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3, 0, 20)
+
+								if cb == nil or not cb then
+									key_callback(extra_value)
+								end
+							end
+							keybind:set_value(new_value, true)
+
+							menu.on_load_cfg:Connect(function()
+								keybind:set_value(menu.values[tab.tab_num][section_name][sector_name][extra_flag])
+							end)
+
+							return keybind
+						end
 					elseif type == "TextBox" then
 						Border.Size = Border.Size + UDim2.new(0, 0, 0, 30)
 
