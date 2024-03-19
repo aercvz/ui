@@ -724,7 +724,7 @@ function library.new(library_title, cfg_location, color)
 										extra_value.Key = nil
 									end
 
-									key_callback(extra_value)
+									key_callback(extra_value, true)
 									menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
 								elseif extra_value.Key ~= nil then
 									local key = input.KeyCode.Name ~= "Unknown" and input.KeyCode.Name or input.UserInputType.Name
@@ -734,7 +734,7 @@ function library.new(library_title, cfg_location, color)
 										elseif extra_value.Type == "Hold" then
 											extra_value.Active = true
 										end
-										key_callback(extra_value)
+										key_callback(extra_value, false)
 										menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
 									end
 								end
@@ -745,7 +745,7 @@ function library.new(library_title, cfg_location, color)
 									if key == extra_value.Key then
 										if extra_value.Type == "Hold" then
 											extra_value.Active = false
-											key_callback(extra_value)
+											key_callback(extra_value, false)
 											menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
 										end
 									end
