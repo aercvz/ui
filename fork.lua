@@ -1585,9 +1585,10 @@ function library.new(library_title, cfg_location, color)
 						local Label = library:create("TextLabel", {
 							Name = "Label",
 							AnchorPoint = Vector2.new(0.5, 0.5),
-							BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+							BackgroundTransparency = 1,
 							BorderColor3 = Color3.fromRGB(0, 0, 0),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
+							Position = UDim2.new(0, 27, 0, 5),
+							TextXAlignment = Enum.TextXAlignment.Left,
 							Size = UDim2.new(0, 215, 0, 20),
 							Font = Enum.Font.Ubuntu,
 							Text = text,
