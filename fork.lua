@@ -1570,7 +1570,7 @@ function library.new(library_title, cfg_location, color)
 							do_callback()
 						end)
 					elseif type == "TextLabel" then
-						Border.Size = Border.Size + UDim2.new(0, 0, 0, 30)
+						Border.Size = Border.Size + UDim2.new(0, 0, 0, 18)
 						
 						local has_extra = false
 						local binding = false
@@ -1578,8 +1578,8 @@ function library.new(library_title, cfg_location, color)
 						local LabelFrame = library:create("Frame", {
 							Name = "LabelFrame",
 							BackgroundTransparency = 1,
-							Position = UDim2.new(0, 9, 0.5, 0),
-							Size = UDim2.new(0, 9, 0, 9),
+							Position = UDim2.new(0, 0, 0, 0),
+							Size = UDim2.new(1, 0, 0, 18),
 						}, Container)
 
 						local Label = library:create("TextLabel", {
