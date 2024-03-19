@@ -586,7 +586,7 @@ function library.new(library_title, cfg_location, color)
 							has_extra = true
 							local extra_flag = "$"..flag
 
-							local extra_value = {Key, Type = "Always", Active = true}
+							local extra_value = {Key = key_default, Type = "Always", Active = true}
 							key_callback = key_callback or function() end
 
 							local Keybind = library:create("TextButton", {
