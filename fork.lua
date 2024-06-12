@@ -1810,11 +1810,12 @@ function library.new(library_title, cfg_location, color)
 							if has_extra then return end
 							has_extra = true
 
+							local accent = color
 							local color = {}
 
 							local extra_flag = "$"..flag
 
-							local extra_value = {Color}
+							local extra_value = {}
 							color_callback = color_callback or function() end
 
 							local ColorButton = library:create("TextButton", {
@@ -1900,7 +1901,7 @@ function library.new(library_title, cfg_location, color)
 							end)
 							ColorFrame.MouseEnter:Connect(function()
 								in_color = true
-								--library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = color})
+								library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = accent})
 							end)
 							ColorFrame.MouseLeave:Connect(function()
 								in_color = false
