@@ -1900,7 +1900,7 @@ function library.new(library_title, cfg_location, color)
 							end)
 							ColorFrame.MouseEnter:Connect(function()
 								in_color = true
-								library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = color})
+								--library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = color})
 							end)
 							ColorFrame.MouseLeave:Connect(function()
 								in_color = false
@@ -2428,7 +2428,7 @@ function library.new(library_title, cfg_location, color)
 						}, SliderButton)
 
 						local UIGradient = library:create("UIGradient", {
-							Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(79, 95, 239)), ColorSequenceKeypoint.new(1, Color3.fromRGB(56, 67, 163))},
+							Color = ColorSequence.new{ColorSequenceKeypoint.new(0, color), ColorSequenceKeypoint.new(1, color)},
 							Rotation = 90,
 						}, SliderFrame)
 
