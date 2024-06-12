@@ -1571,7 +1571,7 @@ function library.new(library_title, cfg_location, color)
 						end)
 					elseif type == "TextLabel" then
 						Border.Size = Border.Size + UDim2.new(0, 0, 0, 18)
-						
+
 						local has_extra = false
 						local binding = false
 
@@ -1588,7 +1588,7 @@ function library.new(library_title, cfg_location, color)
 							TextColor3 = Color3.fromRGB(150, 150, 150),
 							TextSize = 14,
 						}, Container)
-						
+
 						function element:add_keybind(key_default, key_callback)
 							local keybind = {}
 
@@ -1805,6 +1805,275 @@ function library.new(library_title, cfg_location, color)
 							end)
 
 							return keybind
+						end
+						function element:add_color(color_default, has_transparency, color_callback)
+							if has_extra then return end
+							has_extra = true
+
+							local color = {}
+
+							local extra_flag = "$"..flag
+
+							local extra_value = {Color}
+							color_callback = color_callback or function() end
+
+							local ColorButton = library:create("TextButton", {
+								Name = "ColorButton",
+								AnchorPoint = Vector2.new(1, 0.5),
+								BackgroundColor3 = Color3.fromRGB(255, 28, 28),
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Position = UDim2.new(0, 265, 0.5, 0),
+								Size = UDim2.new(0, 35, 0, 11),
+								AutoButtonColor = false,
+								Font = Enum.Font.Ubuntu,
+								Text = "",
+								TextXAlignment = Enum.TextXAlignment.Right,
+							}, Label)
+
+							local ColorFrame = library:create("Frame", {
+								Name = "ColorFrame",
+								Parent = ColorButton,
+								BackgroundColor3 = Color3.fromRGB(10, 10, 10),
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Position = UDim2.new(1, 5, 0, 0),
+								Size = UDim2.new(0, 200, 0, 170),
+								Visible = false,
+								ZIndex = 2,
+							}, ColorButton)
+
+							local ColorPicker = library:create("ImageButton", {
+								Name = "ColorPicker",
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Position = UDim2.new(0, 40, 0, 10),
+								Size = UDim2.new(0, 150, 0, 150),
+								AutoButtonColor = false,
+								Image = "rbxassetid://4155801252",
+								ImageColor3 = Color3.fromRGB(255, 0, 4),
+								ZIndex = 2,
+							}, ColorFrame)
+
+							local ColorPick = library:create("Frame", {
+								Name = "ColorPick",
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Size = UDim2.new(0, 1, 0, 1),
+								ZIndex = 2,
+							}, ColorPicker)
+
+							local HuePicker = library:create("TextButton", {
+								Name = "HuePicker",
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Position = UDim2.new(0, 10, 0, 10),
+								Size = UDim2.new(0, 20, 0, 150),
+								ZIndex = 2,
+								AutoButtonColor = false,
+								Text = "",
+							}, ColorFrame)
+
+							local UIGradient = library:create("UIGradient", {
+								Rotation = 90,
+								Color = ColorSequence.new {
+									ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+									ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 0, 255)),
+									ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 0, 255)),
+									ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
+									ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 255, 0)),
+									ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 255, 0)),
+									ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))
+								}
+							}, HuePicker)
+
+							local HuePick = library:create("ImageButton", {
+								Name = "HuePick",
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BorderColor3 = Color3.fromRGB(0, 0, 0),
+								Size = UDim2.new(1, 0, 0, 1),
+								ZIndex = 2,
+							}, HuePicker)
+
+							local in_color = false
+							local in_color2 = false
+							ColorButton.MouseButton1Down:Connect(function()
+								ColorFrame.Visible = not ColorFrame.Visible
+							end)
+							ColorFrame.MouseEnter:Connect(function()
+								in_color = true
+								library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = color})
+							end)
+							ColorFrame.MouseLeave:Connect(function()
+								in_color = false
+								library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
+							end)
+							ColorButton.MouseEnter:Connect(function()
+								in_color2 = true
+							end)
+							ColorButton.MouseLeave:Connect(function()
+								in_color2 = false
+							end)
+							uis.InputBegan:Connect(function(input)
+								if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
+									if ColorFrame.Visible == true and not in_color and not in_color2 then
+										ColorFrame.Visible = false
+									end
+								end
+							end)
+
+							local TransparencyColor
+							local TransparencyPick
+							if has_transparency then
+								ColorFrame.Size = UDim2.new(0, 200, 0, 200)
+
+								local TransparencyPicker = library:create("ImageButton", {
+									Name = "TransparencyPicker",
+									BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+									BorderColor3 = Color3.fromRGB(0, 0, 0),
+									Position = UDim2.new(0, 10, 0, 170),
+									Size = UDim2.new(0, 180, 0, 20),
+									Image = "rbxassetid://3887014957",
+									ScaleType = Enum.ScaleType.Tile,
+									TileSize = UDim2.new(0, 10, 0, 10),
+									ZIndex = 2,
+								}, ColorFrame)
+
+								TransparencyColor = library:create("ImageLabel", {
+									BackgroundTransparency = 1,
+									Size = UDim2.new(1, 0, 1, 0),
+									Image = "rbxassetid://3887017050",
+									ZIndex = 2,
+								}, TransparencyPicker)
+
+								TransparencyPick = library:create("Frame", {
+									Name = "TransparencyPick",
+									BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+									BorderColor3 = Color3.fromRGB(0, 0, 0),
+									Size = UDim2.new(0, 1, 1, 0),
+									ZIndex = 2,
+								}, TransparencyPicker)
+
+								extra_value.Transparency = 0
+
+								function color.update_transp()
+									local x = math.clamp(mouse.X - TransparencyPicker.AbsolutePosition.X, 0, 180)
+									TransparencyPick.Position = UDim2.new(0, x, 0, 0)
+									local transparency = x/180
+									extra_value.Transparency = transparency
+
+									print(transparency)
+
+									color_callback(extra_value)
+									menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+								end
+								TransparencyPicker.MouseButton1Down:Connect(function()
+									color.update_transp()
+									local moveconnection = mouse.Move:Connect(function()
+										color.update_transp()
+									end)
+									releaseconnection = uis.InputEnded:Connect(function(Mouse)
+										if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
+											color.update_transp()
+											moveconnection:Disconnect()
+											releaseconnection:Disconnect()
+										end
+									end)
+								end)
+							end
+
+							color.h = (math.clamp(HuePick.AbsolutePosition.Y-HuePicker.AbsolutePosition.Y, 0, HuePicker.AbsoluteSize.Y)/HuePicker.AbsoluteSize.Y)
+							color.s = 1-(math.clamp(ColorPick.AbsolutePosition.X-ColorPick.AbsolutePosition.X, 0, ColorPick.AbsoluteSize.X)/ColorPick.AbsoluteSize.X)
+							color.v = 1-(math.clamp(ColorPick.AbsolutePosition.Y-ColorPick.AbsolutePosition.Y, 0, ColorPick.AbsoluteSize.Y)/ColorPick.AbsoluteSize.Y)
+
+							extra_value.Color = Color3.fromHSV(color.h, color.s, color.v)
+							menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+
+							function color.update_color()
+								local ColorX = (math.clamp(mouse.X - ColorPicker.AbsolutePosition.X, 0, ColorPicker.AbsoluteSize.X)/ColorPicker.AbsoluteSize.X)
+								local ColorY = (math.clamp(mouse.Y - ColorPicker.AbsolutePosition.Y, 0, ColorPicker.AbsoluteSize.Y)/ColorPicker.AbsoluteSize.Y)
+								ColorPick.Position = UDim2.new(ColorX, 0, ColorY, 0)
+
+								color.s = 1 - ColorX
+								color.v = 1 - ColorY
+
+								ColorButton.BackgroundColor3 = Color3.fromHSV(color.h, color.s, color.v)
+								extra_value.Color = Color3.fromHSV(color.h, color.s, color.v)
+								color_callback(extra_value)
+								menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+							end
+							ColorPicker.MouseButton1Down:Connect(function()
+								color.update_color()
+								local moveconnection = mouse.Move:Connect(function()
+									color.update_color()
+								end)
+								releaseconnection = uis.InputEnded:Connect(function(Mouse)
+									if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
+										color.update_color()
+										moveconnection:Disconnect()
+										releaseconnection:Disconnect()
+									end
+								end)
+							end)
+
+							function color.update_hue()
+								local y = math.clamp(mouse.Y - HuePicker.AbsolutePosition.Y, 0, 148)
+								HuePick.Position = UDim2.new(0, 0, 0, y)
+								local hue = y/148
+								color.h = 1-hue
+								ColorPicker.ImageColor3 = Color3.fromHSV(color.h, 1, 1)
+								ColorButton.BackgroundColor3 = Color3.fromHSV(color.h, color.s, color.v)
+								if TransparencyColor then
+									TransparencyColor.ImageColor3 = Color3.fromHSV(color.h, 1, 1)
+								end
+								extra_value.Color = Color3.fromHSV(color.h, color.s, color.v)
+								color_callback(extra_value)
+								menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+							end
+							HuePicker.MouseButton1Down:Connect(function()
+								color.update_hue()
+								local moveconnection = mouse.Move:Connect(function()
+									color.update_hue()
+								end)
+								releaseconnection = uis.InputEnded:Connect(function(Mouse)
+									if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
+										color.update_hue()
+										moveconnection:Disconnect()
+										releaseconnection:Disconnect()
+									end
+								end)
+							end)
+
+							function color:set_value(new_value, cb)
+								extra_value = new_value and new_value or extra_value
+								menu.values[tab.tab_num][section_name][sector_name][extra_flag] = extra_value
+
+								local duplicate = Color3.new(extra_value.Color.R, extra_value.Color.G, extra_value.Color.B)
+								color.h, color.s, color.v = duplicate:ToHSV()
+								color.h = math.clamp(color.h, 0, 1)
+								color.s = math.clamp(color.s, 0, 1)
+								color.v = math.clamp(color.v, 0, 1)
+
+								ColorPick.Position = UDim2.new(1 - color.s, 0, 1 - color.v, 0)
+								ColorPicker.ImageColor3 = Color3.fromHSV(color.h, 1, 1)
+								ColorButton.BackgroundColor3 = Color3.fromHSV(color.h, color.s, color.v)
+								HuePick.Position = UDim2.new(0, 0, 1 - color.h, -1)
+
+								if TransparencyColor then
+									TransparencyColor.ImageColor3 = Color3.fromHSV(color.h, 1, 1)
+
+									TransparencyPick.Position = UDim2.new(extra_value.Transparency, -1, 0, 0)
+								end
+
+								if cb == nil or not cb then
+									color_callback(extra_value)
+								end
+							end
+							color:set_value(color_default and color_default, true)
+
+							menu.on_load_cfg:Connect(function()
+								color:set_value(menu.values[tab.tab_num][section_name][sector_name][extra_flag])
+							end)
+
+							return color
 						end
 					elseif type == "TextBox" then
 						Border.Size = Border.Size + UDim2.new(0, 0, 0, 30)
