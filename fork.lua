@@ -2488,7 +2488,8 @@ function library.new(library_title, cfg_location, color)
 								if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
 									SliderFrame.Size = UDim2.new(0, math.clamp(mouse.X - SliderFrame.AbsolutePosition.X, 0, 260), 1, 0)
 
-									local val = math.clamp((mouse.X - SliderFrame.AbsolutePosition.X)/SliderFrame.AbsoluteSize.X, 0, 1) * max -- math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
+									local val = math.floor(((max / 260) * SliderFrame.AbsoluteSize.X) + min) -- math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
+									print(val)
 									if val ~= value.Slider then
 										SliderValue.Text = val
 										value.Slider = val
