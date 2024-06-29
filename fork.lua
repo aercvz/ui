@@ -2464,7 +2464,7 @@ function library.new(library_title, cfg_location, color)
 						SliderButton.MouseButton1Down:Connect(function()
 							SliderFrame.Size = UDim2.new(0, math.clamp(mouse.X - SliderFrame.AbsolutePosition.X, 0, 260), 1, 0)
 
-							local val = math.clamp((mouse.X - SliderFrame.AbsolutePosition.X)/SliderFrame.AbsoluteSize.X, 0, 1) * max --math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
+							local val = math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
 							if val ~= value.Slider then
 								SliderValue.Text = val
 								value.Slider = val
@@ -2476,8 +2476,7 @@ function library.new(library_title, cfg_location, color)
 							move_connection = mouse.Move:Connect(function()
 								SliderFrame.Size = UDim2.new(0, math.clamp(mouse.X - SliderFrame.AbsolutePosition.X, 0, 260), 1, 0)
 
-								local val = math.clamp((mouse.X - SliderFrame.AbsolutePosition.X)/SliderFrame.AbsoluteSize.X, 0, 1) * max -- math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
-								print(math.clamp(mouse.X - SliderFrame.AbsolutePosition.X, 0, 1) * max)
+								local val = math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
 								if val ~= value.Slider then
 									SliderValue.Text = val
 									value.Slider = val
@@ -2488,10 +2487,7 @@ function library.new(library_title, cfg_location, color)
 								if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
 									SliderFrame.Size = UDim2.new(0, math.clamp(mouse.X - SliderFrame.AbsolutePosition.X, 0, 260), 1, 0)
 
-									print(SliderFrame.AbsoluteSize.X)
-									
-									local val = math.clamp(SliderFrame.AbsoluteSize.X / 260, 0, 1) * max -- math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
-									print(val)
+									local val = math.floor((((max - min) / 260) * SliderFrame.AbsoluteSize.X) + min)
 									if val ~= value.Slider then
 										SliderValue.Text = val
 										value.Slider = val
@@ -2515,8 +2511,7 @@ function library.new(library_title, cfg_location, color)
 							value = new_value and new_value or value
 							menu.values[tab.tab_num][section_name][sector_name][flag] = value
 
-							local new_size = math.clamp(value.Slider/max, 0, 1)--(value.Slider - min) / (max-min)
-							print(new_size)
+							local new_size = (value.Slider - min) / (max-min)
 							SliderFrame.Size = UDim2.new(new_size, 0, 1, 0)
 							SliderValue.Text = value.Slider
 
