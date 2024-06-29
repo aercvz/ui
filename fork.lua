@@ -2512,6 +2512,7 @@ function library.new(library_title, cfg_location, color)
 							menu.values[tab.tab_num][section_name][sector_name][flag] = value
 
 							local new_size = (value.Slider - min) / (max-min)
+							print(new_size)
 							SliderFrame.Size = UDim2.new(new_size, 0, 1, 0)
 							SliderValue.Text = value.Slider
 
